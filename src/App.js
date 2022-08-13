@@ -108,9 +108,10 @@ const App = () => {
           }
 
           console.log("File Hash:" + fileInfo.fileHash)
-          // props.setFiles([...props.files,fileInfo]);
+          
           setFiles([...files, fileInfo]);
-          // props.setFiles([...props.files,file]);
+          // setFiles({...files, fileInfo});
+          
           console.log("Files:" + files.length);
         }
       }
