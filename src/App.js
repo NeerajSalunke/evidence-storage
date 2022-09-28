@@ -90,12 +90,13 @@ const App = () => {
         setFilesCount(filecount);
 
         console.log("Display Files ke andar")
-        for (var i = 10; i >= 1; i--) {
+        let array = [];
+        for (var i = 20; i >= 1; i--) {
           // const file = await filestorageSM.methods.files(i).call();
-          console.log("Display Files ke for loop ke andar")
+          // console.log("Display Files ke for loop ke andar")
           const file = await Contract.files(i);
-          console.log(file)
-          console.log(typeof (file))
+          // console.log(file)
+          // console.log(typeof (file))
           let fileInfo = {
             fileId: file[0],
             fileHash: file[1],
@@ -107,13 +108,22 @@ const App = () => {
             uploader: file[7]
           }
 
-          console.log("File Hash:" + fileInfo.fileHash)
-          
-          setFiles([...files, fileInfo]);
+          // console.log("File Hash:" + fileInfo.fileHash)
+          const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+          console.log("Uplaoder:" + fileInfo.uploader.toLowerCase())
+          console.log("Current account:" + accounts[0])
+          if(fileInfo.uploader.toLowerCase()===accounts[0])
+          {
+            array.push(fileInfo);
+          }
+          // setFiles([...files, fileInfo]);
           // setFiles({...files, fileInfo});
+
           
-          console.log("Files:" + files.length);
+          // console.log("Files:" + files.length);
         }
+        setFiles(array);
+        console.log(array);
       }
       else {
         console.log("Ethereum object doesn't exist!")
@@ -122,12 +132,13 @@ const App = () => {
       console.log(error);
     }
   }
-
+  
   useEffect(() => {
     checkIfWalletIsConnected();
     // connectWallet();
     // displayFiles();
   }, [])
+  // console.log({files});
 
   return (
     <div className="mainContainer">
@@ -145,15 +156,18 @@ const App = () => {
           <button>Show Files</button>
         </form>
         {files.map((fl, index) => {
-          return (
+           return (
             <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
-              <div>File Hash: {fl.fileHash}</div>
               <div>File Name: {fl.fileName}</div>
-              <div>Hello</div>
+              <div>File Hash: {fl.fileHash}</div>
+              <div>File Type: {fl.fileType}</div>
+              {/* <div>Upload Time: {fl.uploadTime}</div> */}
+              <div>Uploader: {fl.uploader}</div>
+              
             </div>
 
           )
-        })
+          })
         }
       </div>
     </div>

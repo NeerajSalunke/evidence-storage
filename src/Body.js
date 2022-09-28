@@ -5,11 +5,20 @@ import abi from "./utils/FileStorage.json";
 // import ReactTable from "react-table"; 
 // import "react-table/react-table.css";   
 import './App.css';
-import { create } from 'ipfs-http-client';
+// import { create } from 'ipfs-http-client';
+import { Web3Storage } from 'web3.storage';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDhFRWZENjFGMmZDOTBFRmM5RWNFODgxN2MwMTUzMGFhMmYzRDIwRTQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjQyMTE5MzA0NzQsIm5hbWUiOiJFdmlkZW5jZS1zdG9yYWdlMSJ9.ZV7Wp9JmwaJO3r-mfEG3l7SMYq0xfKdXk7r3E10uTCo'
+// const ipfsClient = require("ipfs-http-client")
+// const projectId = '2FJKIcxCGcZARZrHr23KgHTf3tT'
+// const projectSecret = '47453966ffcb91c9e829b9c2411f82c5'
+// var buffer = window.buffer;
+// console.log("buffer", buffer)
+// const auth = 'Basic ' + buffer.Buffer.from(projectId + ':' + projectSecret).toString('base64');
+// const auth = 'Basic ' + (projectId + ':' + projectSecret).toString('base64');
+// const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https',headers: {authorization: auth} })
+// const ipfs = create({ host: 'filecoin.infura.io', port: 5001, protocol: 'https',headers: {authorization: auth} })
 
-
-// const ipfsClient = require('ipfs-http-client')
-const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
+// const ipfs = create({ host: 'ipfs.infura.io', port: 5001, apiPath: '/api/v0' })
 
 // const {create} = require('ipfs-http-client')
 // const ipfs = create({host:'ipfs.infura.io',port:5001,protocol:'https'})
@@ -17,7 +26,6 @@ const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 
 const Body = ({ /* filestorageSM, */ account, filescount }) => {
-
   /* const [files,setFiles] = useState([{
     path: 1,
     size: 2,
@@ -25,6 +33,12 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
     name: "neeraj",
     description: "Hello"
   }]); */
+
+  // const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+  // const ipfs = create({ host: 'filecoin.infura.io', port: 5001, protocol: 'https',headers: {authorization: auth} })
+
+  const storage = new Web3Storage({ token });
+
   const [buffer, setBuffer] = useState("");
   const [type, setType] = useState("");
   const [name, setName] = useState("");
@@ -37,8 +51,18 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
 
   const captureFile = async (e) => {
     e.preventDefault()
+    const fileInput = document.querySelector('input[type="file"]');
+    const rootCid = await storage.put(fileInput.files);
+    console.log(rootCid);
+    // setBuffer(rootCid);
+    // setBuffer(reader.result)
+    setType(fileInput.type)
+    setName(fileInput.name)
+    let description = "a file";
+    await filestorageSM.uploadFile(rootCid, fileInput.size, type, name, description);
 
-    const file = e.target.files[0]
+
+    /* const file = e.target.files[0]
     const reader = new window.FileReader()
 
     reader.readAsArrayBuffer(file) //The FileReader interface's readAsArrayBuffer() method is used to start reading the contents of a specified Blob or File.
@@ -47,7 +71,7 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
       setBuffer(reader.result)
       setType(file.type)
       setName(file.name)
-    }
+    } */
 
     try {
       const { ethereum } = window;
@@ -167,10 +191,11 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
 
   return (
     <>
-      <form id="upload" onSubmit={onsubmit}>
+      {/* <form id="upload" onSubmit={onsubmit}>
         <input type="file" onChange={captureFile} />
         <button type="submit">Upload</button>
-      </form>
+      </form> */}
+      <input type="file" onChange={captureFile} />
 
       {/* <div>  
           <ReactTable  
