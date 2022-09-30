@@ -40,8 +40,8 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
   const storage = new Web3Storage({ token });
 
   const [buffer, setBuffer] = useState("");
-  const [type, setType] = useState("");
-  const [name, setName] = useState("");
+  // const [type, setType] = useState("");
+  // const [name, setName] = useState("");
   const [filestorageSM, setfilestorageSM] = useState();   /* SM means smart contract */
   // const [filescount, setFilesCount] = useState();
   // const [currentAccount, setCurrentAccount] = useState("");
@@ -54,12 +54,20 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
     const fileInput = document.querySelector('input[type="file"]');
     const rootCid = await storage.put(fileInput.files);
     console.log(rootCid);
-    // setBuffer(rootCid);
+    console.log("To open uploaded file, click on: https://dweb.link/ipfs/" + rootCid);
+    setBuffer(rootCid);
     // setBuffer(reader.result)
-    setType(fileInput.type)
-    setName(fileInput.name)
-    let description = "a file";
-    await filestorageSM.uploadFile(rootCid, fileInput.size, type, name, description);
+    // setType(fileInput.type)
+    // setName(fileInput.name)
+    // let description = "a file";
+    // let fileSize = 10;
+    // let fileType = "photo";
+    // let fileName = "Name";
+    // let trial = await filestorageSM.fileCount();
+    // console.log("trial fileCount",trial.toNumber())
+    // await filestorageSM.uploadFile(rootCid, fileSize, fileType, fileName, description);
+    
+    // await filestorageSM.uploadFile(rootCid, fileSize, type, name, description);
 
 
     /* const file = e.target.files[0]
@@ -98,75 +106,96 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
     } catch (error) {
       console.log(error)
     }
+    // afterUpload();
+  }
+  const onsubmit = async (e) => {
+    e.preventDefault();
+    let description = "a file";
+    let fileSize = 10;
+    let fileType = "photo";
+    let caseid=document.querySelector('input[name="case"]');
+    let caseidvalue=caseid.value;
+    let fileName = caseidvalue;
+    // let fileName = "Name 2";
+    console.log(caseidvalue);
+    const trial = await filestorageSM.fileCount();
+    console.log("Inside afterUpload, trial:",trial.toNumber());
+    try{
+      await filestorageSM.uploadFile(buffer, fileSize, fileType, fileName, description);
+    }
+    catch(e)
+    {
+      console.log("Error:",e)
+    }
   }
 
 
-  console.log('buffer:', buffer)
-  console.log('type:', type)
-  console.log('name:', name)
+  // console.log('buffer:', buffer)
+  // console.log('type:', type)
+  // console.log('name:', name)
 
 
   //here i define a function onsubmit
-  const onsubmit = async (e) => { //We have declared "ipfs.add" to await. This means it will stop for till "ipfs.add" doesn't complete execution. i.e. why i declared onSubmit as async function.
-    e.preventDefault();
+  // const onsubmit = async (e) => { //We have declared "ipfs.add" to await. This means it will stop for till "ipfs.add" doesn't complete execution. i.e. why i declared onSubmit as async function.
+  //   e.preventDefault();
 
-    console.log("Submitting file to IPFS...");
-    // console.log(filestorageSM.methods.fileCount());
+  //   console.log("Submitting file to IPFS...");
+  //   // console.log(filestorageSM.methods.fileCount());
 
-    //below commented block of code is outdated
-    /* ipfs.add(buffer,(error,result)=>{ //when we send buffer, we can get error or unique hash in return.  
-      if(error)
-      {
-        return console.log(error)
-      }
-      else
-      {
-        console.log(result)
-      }
-    }) */
+  //   //below commented block of code is outdated
+  //   /* ipfs.add(buffer,(error,result)=>{ //when we send buffer, we can get error or unique hash in return.  
+  //     if(error)
+  //     {
+  //       return console.log(error)
+  //     }
+  //     else
+  //     {
+  //       console.log(result)
+  //     }
+  //   }) */
 
 
 
-    //add file to the ipfs
-    if (buffer) //if any file is uploaded
-    {
-      try {
-        const result = await ipfs.add(buffer)
-        console.log("IPFS result:", result);
-        console.log("To open uploaded file, click on: https://ipfs.infura.io/ipfs/" + result.path)
+  //   //add file to the ipfs
+  //   if (buffer) //if any file is uploaded
+  //   {
+  //     try {
+  //       const result = await ipfs.add(buffer)
+  //       console.log("IPFS result:", result);
+  //       console.log("To open uploaded file, click on: https://ipfs.infura.io/ipfs/" + result.path)
 
-        let description = "a file";
-        // await filestorageSM.methods.uploadFile(result.path, result.size, type, name, description).send({ from: account }).on("transactionHash", () => {
-        //   console.log("Successfully ran");
+  //       let description = "a file";
+  //       // await filestorageSM.methods.uploadFile(result.path, result.size, type, name, description).send({ from: account }).on("transactionHash", () => {
+  //       //   console.log("Successfully ran");
 
-        // }).on('error', console.error)
+  //       // }).on('error', console.error)
 
-        await filestorageSM.uploadFile(result.path, result.size, type, name, description);
+  //       await filestorageSM.uploadFile(result.path, result.size, type, name, description);
 
-        /* const myFile = {
-          path: result.path,
-          size: result.size,
-          type: type,
-          name: name,
-          description: description
-        }
-        console.log("Object1:"+myFile.path);
-        console.log("Object1:"+myFile.size);
-        console.log("Object1:"+myFile.type);
-        console.log("Object1:"+myFile.name);
-        console.log("Object1:"+myFile.description);
-        setFiles([...files,myFile]); */
+  //       /* const myFile = {
+  //         path: result.path,
+  //         size: result.size,
+  //         type: type,
+  //         name: name,
+  //         description: description
+  //       }
+  //       console.log("Object1:"+myFile.path);
+  //       console.log("Object1:"+myFile.size);
+  //       console.log("Object1:"+myFile.type);
+  //       console.log("Object1:"+myFile.name);
+  //       console.log("Object1:"+myFile.description);
+  //       setFiles([...files,myFile]); */
 
-      }
-      catch (e) {
-        console.log("Error:", e);
-      }
-    }
-    else {
-      alert("No files submitted. Please try again.");
-      console.log('ERROR: No data to submit');
-    }
-  }
+  //     }
+  //     catch (e) {
+  //       console.log("Error:", e);
+  //     }
+  //   }
+  //   else {
+  //     alert("No files submitted. Please try again.");
+  //     console.log('ERROR: No data to submit');
+  //   }
+  // }
 
   /* const columns = [{  
     Header: 'Path',  
@@ -191,11 +220,15 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
 
   return (
     <>
-      {/* <form id="upload" onSubmit={onsubmit}>
-        <input type="file" onChange={captureFile} />
+      <form className="center" onSubmit={onsubmit}>
+        <input id="custom-file-upload" type="file" onChange={captureFile} />
+        <div>
+          <label for="case">Case ID:</label>
+          <input type="text" id="case" name="case"></input>
+        </div>
         <button type="submit">Upload</button>
-      </form> */}
-      <input type="file" onChange={captureFile} />
+      </form>
+      {/* <input type="file" onChange={captureFile} /> */}
 
       {/* <div>  
           <ReactTable  

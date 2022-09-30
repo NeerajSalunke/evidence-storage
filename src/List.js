@@ -74,7 +74,7 @@ function List(props) {
 
 
     return (
-        <div>
+        <div class="upload">
             <form onSubmit={displayFiles}>
                 <button>Show Files</button>
             </form>

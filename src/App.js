@@ -91,7 +91,7 @@ const App = () => {
 
         console.log("Display Files ke andar")
         let array = [];
-        for (var i = 20; i >= 1; i--) {
+        for (var i = 30; i >= 1; i--) {
           // const file = await filestorageSM.methods.files(i).call();
           // console.log("Display Files ke for loop ke andar")
           const file = await Contract.files(i);
@@ -152,17 +152,21 @@ const App = () => {
           </button>
         )}
 
-        <form onSubmit={displayFiles}>
+        <form class="center" onSubmit={displayFiles}>
           <button>Show Files</button>
         </form>
         {files.map((fl, index) => {
+            // let link="https://dweb.link/ipfs/"+fl.fileHash;
            return (
-            <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
-              <div>File Name: {fl.fileName}</div>
-              <div>File Hash: {fl.fileHash}</div>
+            <div className="center" key={index} style={{margin:"0px 200px 5px", borderRadius:"10px", backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
+              {/* <div>File Name: {fl.fileName}</div> */}
+              <div>Case Number: {fl.fileName}</div>
+              {/* <div>File Hash: {fl.fileHash}</div> */}
+              <div><a href={"https://dweb.link/ipfs/"+fl.fileHash} rel="noopener noreferrer" target="_blank">Open</a></div>
               <div>File Type: {fl.fileType}</div>
+              {/* <div>Case ID: {fl.fileSize}</div> */}
               {/* <div>Upload Time: {fl.uploadTime}</div> */}
-              <div>Uploader: {fl.uploader}</div>
+              {/* <div>Uploader: {fl.uploader}</div> */}
               
             </div>
 
