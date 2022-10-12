@@ -47,7 +47,8 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
   // const [currentAccount, setCurrentAccount] = useState("");
 
   const contractABI = abi.abi;
-  const contractAddress = "0xbe3C0E8e5ACa33EaB9aa9a231F2FE991F40b12D0";
+  // const contractAddress = "0xbe3C0E8e5ACa33EaB9aa9a231F2FE991F40b12D0";
+  const contractAddress = "0xb87411E6255B292c67523A18B840735A5553cC69";
 
   const captureFile = async (e) => {
     e.preventDefault()
