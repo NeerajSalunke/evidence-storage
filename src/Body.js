@@ -38,13 +38,13 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
   // const ipfs = create({ host: 'filecoin.infura.io', port: 5001, protocol: 'https',headers: {authorization: auth} })
 
   const storage = new Web3Storage({ token });
-
+  // let police=true;
   const [buffer, setBuffer] = useState("");
   // const [type, setType] = useState("");
   // const [name, setName] = useState("");
   const [filestorageSM, setfilestorageSM] = useState();   /* SM means smart contract */
   // const [filescount, setFilesCount] = useState();
-  // const [currentAccount, setCurrentAccount] = useState("");
+  const [currentAccount, setCurrentAccount] = useState("");
 
   const contractABI = abi.abi;
   // const contractAddress = "0xbe3C0E8e5ACa33EaB9aa9a231F2FE991F40b12D0";
@@ -93,8 +93,10 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
 
       console.log("Connected", accounts[0]);
-      // setCurrentAccount(accounts[0]);
-
+      setCurrentAccount(accounts[0]);
+      /* if(accounts[0]==="0x42e7df482493b0793ab3e4fa58d85e74f4739910") police=true
+      else police=false
+      console.log("Police:",police) */
       const provider = new ethers.providers.Web3Provider(ethereum);
       const signer = provider.getSigner();
       const Contract = new ethers.Contract(contractAddress, contractABI, signer);
@@ -218,18 +220,30 @@ const Body = ({ /* filestorageSM, */ account, filescount }) => {
       Header: 'Description',  
       accessor: 'description'  
     }] */
-
+    
   return (
     <>
+      {
+        account==="0x42e7df482493b0793ab3e4fa58d85e74f4739910" && (
+          
+        
       <form className="center" onSubmit={onsubmit}>
         <input id="custom-file-upload" type="file" onChange={captureFile} />
         <div>
           <label for="case">Case ID:</label>
           <input type="text" id="case" name="case"></input>
         </div>
-        <button type="submit">Upload</button>
-      </form>
-      {/* <input type="file" onChange={captureFile} /> */}
+        {
+          account==="0x42e7df482493b0793ab3e4fa58d85e74f4739910" && (
+          <button type="submit">Upload</button>)
+        }
+        {/* {
+          police &&(
+          <button type="submit">Upload</button>)
+        } */}
+      </form>)
+      }
+      {/* <input type="file" onChange={captureFile} /> */} 
 
       {/* <div>  
           <ReactTable  

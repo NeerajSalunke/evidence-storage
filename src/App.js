@@ -92,7 +92,7 @@ const App = () => {
 
         console.log("Display Files ke andar")
         let array = [];
-        for (var i = 30; i >= 1; i--) {
+        for (var i = 10; i >= 1; i--) {
           // const file = await filestorageSM.methods.files(i).call();
           // console.log("Display Files ke for loop ke andar")
           const file = await Contract.files(i);
@@ -113,10 +113,14 @@ const App = () => {
           const accounts = await ethereum.request({ method: "eth_requestAccounts" });
           console.log("Uplaoder:" + fileInfo.uploader.toLowerCase())
           console.log("Current account:" + accounts[0])
-          if(fileInfo.uploader.toLowerCase()===accounts[0])
+          array.push(fileInfo);
+          /* if(accounts[0]==="0x42e7df482493b0793ab3e4fa58d85e74f4739910")
+          {
+          }
+          else if(fileInfo.uploader.toLowerCase()===accounts[0])
           {
             array.push(fileInfo);
-          }
+          } */
           // setFiles([...files, fileInfo]);
           // setFiles({...files, fileInfo});
 
